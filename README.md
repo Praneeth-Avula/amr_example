@@ -13,7 +13,7 @@
 
         For example:
         
-        ros2 launch amr_robot robot_order.launch.py directory_path:="/home/praneeth ros2_ws/src/amr_example/amr_robot/config"
+        ros2 launch amr_robot robot_order.launch.py directory_path:="/home/praneeth/ros2_ws/src/amr_example/amr_robot/config"
 * Publish the nextOrder topic to get the shortest path for robot to reach the destination, using:
 
         ros2 topic pub --once /nextOrder custom_msg_amr/msg/Order "{order_id: 1000005, description: 'order'}"
