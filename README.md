@@ -37,3 +37,4 @@
 
 * Terminal ouput for test cases:
 
+![alt text](images/unittests_output.png "RVIZ")
