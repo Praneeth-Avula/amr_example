@@ -10,7 +10,6 @@
 #include <limits>
 
 #include "rclcpp/rclcpp.hpp"
-#include "rcl_interfaces/msg/set_parameters_result.hpp"
 
 // messages types
 #include "std_msgs/msg/string.hpp"

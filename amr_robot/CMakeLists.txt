@@ -8,7 +8,6 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(rcl_interfaces REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(visualization_msgs REQUIRED)
@@ -25,7 +24,8 @@ set(dependencies
   geometry_msgs
   visualization_msgs
   custom_msg_amr
-  rcl_interfaces
+  yaml-cpp
+  ament_cmake_gtest
   ${OTHER_DEPS}
 )
 
