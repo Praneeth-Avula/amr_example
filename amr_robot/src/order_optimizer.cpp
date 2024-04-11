@@ -88,7 +88,7 @@ void OrderOptimizer::order_callback(const custom_msg_amr::msg::Order::SharedPtr 
     }
     RCLCPP_INFO(this->get_logger(), "Delivering to destination x: %f, y: %f", final_cx, final_cy);
 
-    marker_array_.markers.resize(allParts.size()+2); 
+    marker_array_.markers.resize(pathSequence.size()+2); 
 
     // marker array for the robot position, the pick up points and destination
 
@@ -107,8 +107,8 @@ void OrderOptimizer::order_callback(const custom_msg_amr::msg::Order::SharedPtr 
     marker1.color.r = 1.0;
     marker1.color.a = 1.0;
 
-    for (size_t i = 1; i < allParts.size()+1; ++i) {
-        const auto& pair = allParts[i];
+    for (size_t i = 1; i < pathSequence.size()+1; ++i) {
+        const auto& pair = pathSequence[i-1];
         auto &marker = marker_array_.markers[i];
         marker.header.frame_id = "map";
         marker.header.stamp = this->now();
@@ -126,7 +126,7 @@ void OrderOptimizer::order_callback(const custom_msg_amr::msg::Order::SharedPtr 
         marker.color.a = 1.0;
     }
 
-    visualization_msgs::msg::Marker& marker2 = marker_array_.markers[allParts.size()+1];
+    visualization_msgs::msg::Marker& marker2 = marker_array_.markers[pathSequence.size()+1];
     marker2.header.frame_id = "map";
     marker2.header.stamp = this->now();
     marker2.ns = "order_markers";
@@ -221,13 +221,14 @@ std::vector<std::pair<int, Part>> OrderOptimizer::shortestPathSequence(const Poi
     std::vector<std::pair<int, Part>> remainingPoints = pickupPoints;
 
     auto cmp = [this, origin](const std::pair<int, Part>& p1, const std::pair<int, Part>& p2) { 
-    double dist1 = sqrt((p1.second.cx - origin.x) * (p1.second.cx - origin.x) + (p1.second.cy - origin.y) * (p1.second.cy - origin.y));
-    double dist2 = sqrt((p2.second.cx - origin.x) * (p2.second.cx - origin.x) + (p2.second.cy - origin.y) * (p2.second.cy - origin.y));
+        double dist1 = sqrt((p1.second.cx - origin.x) * (p1.second.cx - origin.x) + (p1.second.cy - origin.y) * (p1.second.cy - origin.y));
+        double dist2 = sqrt((p2.second.cx - origin.x) * (p2.second.cx - origin.x) + (p2.second.cy - origin.y) * (p2.second.cy - origin.y));
     return dist1 < dist2; };
+
     std::sort(remainingPoints.begin(), remainingPoints.end(), cmp);
 
     for (const auto& point : remainingPoints) {
-    pathSequence.push_back(point);
+        pathSequence.push_back(point);
     }
     return pathSequence;
 }
